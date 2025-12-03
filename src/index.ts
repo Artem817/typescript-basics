@@ -1,15 +1,68 @@
-
-const userName: string = "Артем";
-const userAge: number = 20;
-const isActive: boolean = true;
-
-function greetUser(name: string, age: number, active: boolean): string {
-  const status = active ? "активний" : "неактивний";
-  return `Привіт, ${name}! Вам ${age} років. Статус: ${status}`;
+interface User {
+    id: number;
+    name: string;
+    email: string;
+    company: {
+        name: string;
+    };
 }
 
-console.log(greetUser(userName, userAge, isActive));
+const modal = document.getElementById('my-modal') as HTMLDivElement;
+const openBtn = document.getElementById('open-modal-btn') as HTMLButtonElement;
+const closeBtn = document.getElementById('close-modal-btn') as HTMLSpanElement;
+const header = document.getElementById('main-header') as HTMLElement;
+const userList = document.getElementById('user-list') as HTMLUListElement;
 
-const numbers: number[] = [1, 2, 3, 4, 5];
-const sum: number = numbers.reduce((acc, curr) => acc + curr, 0);
-console.log(`Сума чисел: ${sum}`);
+function openModal(): void {
+    modal.classList.add('show');
+}
+
+function closeModal(): void {
+    modal.classList.remove('show');
+}
+
+if (openBtn) openBtn.addEventListener('click', openModal);
+if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+window.addEventListener('click', (event: MouseEvent) => {
+    if (event.target === modal) {
+        closeModal();
+    }
+});
+
+
+window.addEventListener('scroll', (): void => {
+    if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+});
+
+
+async function fetchUsers(): Promise<void> {
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/users');
+        if (!response.ok) throw new Error('Network response was not ok');
+        
+        const users: User[] = await response.json();
+        
+        userList.innerHTML = ''; 
+
+        users.slice(0, 5).forEach((user) => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <strong>${user.name}</strong><br>
+                <small>${user.email}</small><br>
+                <span style="color: #666; font-size: 0.9em;">Company: ${user.company.name}</span>
+            `;
+            userList.appendChild(li);
+        });
+
+    } catch (error) {
+        console.error('Error:', error);
+        userList.innerHTML = '<li style="color: red;">Failed to load data.</li>';
+    }
+}
+
+fetchUsers();
