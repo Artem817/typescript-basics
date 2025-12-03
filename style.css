@@ -10,25 +10,24 @@ body {
 header {
     background: #2c3e50;
     color: #fff;
-    padding: 30px 40px;
+    padding: 50px 20px;
     position: sticky;
     top: 0;
     z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: none;
-    border-bottom: 4px solid transparent;
-    transition: all 0.4s ease;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    border-bottom: 0px solid transparent;
 }
 
 header.scrolled {
-    background: #000000;
-    padding: 10px 40px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    border-bottom: 4px solid #f1c40f;
-    opacity: 0.95;
+    background: #e74c3c;
+    padding: 10px 20px;
+    box-shadow: 0 10px 0px rgba(0,0,0,0.2);
+    border-bottom: 5px solid #f1c40f;
 }
+
 
 button {
     background-color: #3498db;
